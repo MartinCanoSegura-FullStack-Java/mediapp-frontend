@@ -26,9 +26,10 @@ export class ReporteComponent implements OnInit {
   ){}
 
   ngOnInit(): void {
-    this.consultaService.leerArchivo().subscribe(data => {
-      this.convertir(data);
-    });
+    this.generarReporte();
+    // this.consultaService.leerArchivo().subscribe(data => {
+    //   this.convertir(data);
+    // });
 
     this.tipo = 'line';
     this.dibujar();
@@ -130,13 +131,17 @@ export class ReporteComponent implements OnInit {
   }
 
   seleccionarArchivo(e: any) {
-    console.log(e.target.files);
     this.nombreArchivo = e.target.files[0].name;
     this.archivosSeleccionados = e.target.files;
   }
 
   subirArchivo(){
-    this.consultaService.guardarArchivo(this.archivosSeleccionados.item(0)).subscribe();
+    this.consultaService.guardarArchivo(this.archivosSeleccionados.item(0)).subscribe( () => {
+      this.consultaService.leerArchivo().subscribe(data => {
+        this.convertir(data);
+      });
+    });
+    
   }
 
 }

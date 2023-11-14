@@ -1,12 +1,13 @@
 {
-  "name": "mediapp-frontend",
+  "name": "madiapp-frontend",
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "ng test",
+    "build-prod": "ng build --configuration production"
   },
   "private": true,
   "dependencies": {
@@ -21,6 +22,7 @@
     "@angular/platform-browser": "^16.2.0",
     "@angular/platform-browser-dynamic": "^16.2.0",
     "@angular/router": "^16.2.0",
+    "@auth0/angular-jwt": "^5.1.2",
     "chart.js": "^2.9.4",
     "moment": "^2.29.4",
     "ng2-pdf-viewer": "^9.1.5",

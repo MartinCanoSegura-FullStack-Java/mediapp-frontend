@@ -7,7 +7,9 @@
     </div>
 
     <mat-form-field class="example-full-width">            
-        <input matInput placeholder="Nombres" minlength="3" required formControlName="nombres">               
+        <input matInput placeholder="Nombres" minlength="3" required formControlName="nombres">
+        <small *ngIf="f.nombres.errors?.required && f.nombres.touched" class="invalid">Nombre es requerido</small> <!-- Validaciones en el front-->
+        <small *ngIf="f.nombres.errors?.minlength && f.nombres.touched" class="invalid">El campo debe ser mayor a tres caracteres</small> <!-- Validaciones en el front-->
     </mat-form-field>
 
     <mat-form-field class="example-full-width">        

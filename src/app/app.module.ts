@@ -1,10 +1,13 @@
-import { HttpClientModule } from "@angular/common/http";
+import { HashLocationStrategy, LocationStrategy } from "@angular/common";
+import { HTTP_INTERCEPTORS, HttpClientModule } from "@angular/common/http";
 import { NgModule } from "@angular/core";
 import { FlexLayoutModule } from "@angular/flex-layout";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { BrowserModule } from "@angular/platform-browser";
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { JwtModule } from '@auth0/angular-jwt';
 import { PdfViewerModule } from 'ng2-pdf-viewer';
+import { environment } from "src/environments/environment";
 import { AppRoutingModule } from "./app-routing.module";
 import { AppComponent } from "./app.component";
 import { MaterialModule } from "./material/material.module";
@@ -17,11 +20,21 @@ import { EspecialidadEdicionComponent } from './pages/especialidad/especialidad-
 import { EspecialidadComponent } from './pages/especialidad/especialidad.component';
 import { ExamenEdicionComponent } from "./pages/examen/examen-edicion/examen-edicion.component";
 import { ExamenComponent } from "./pages/examen/examen.component";
+import { LoginComponent } from './pages/login/login.component';
+import { RecuperarComponent } from "./pages/login/recuperar/recuperar.component";
+import { TokenComponent } from "./pages/login/recuperar/token/token.component";
 import { MedicoDialogoComponent } from "./pages/medico/medico-dialogo/medico-dialogo.component";
 import { MedicoComponent } from "./pages/medico/medico.component";
+import { Not403Component } from "./pages/not403/not403.component";
+import { Not404Component } from "./pages/not404/not404.component";
 import { PacienteEdicionComponent } from "./pages/paciente/paciente-edicion/paciente-edicion.component";
 import { PacienteComponent } from "./pages/paciente/paciente.component";
 import { ReporteComponent } from './pages/reporte/reporte.component';
+import { ServerErrorsInterceptor } from "./shared/server-errors.interceptor";
+
+export function tokenGetter(){
+  return sessionStorage.getItem(environment.TOKEN_NAME);
+}
 
 @NgModule({
   declarations: [
@@ -39,7 +52,12 @@ import { ReporteComponent } from './pages/reporte/reporte.component';
     WizardComponent,
     BuscarComponent,
     BuscarDialogoComponent,
-    ReporteComponent
+    ReporteComponent,
+    LoginComponent,
+    Not403Component,
+    Not404Component,
+    RecuperarComponent,
+    TokenComponent
   ],
   imports: [
     BrowserModule,
@@ -51,9 +69,23 @@ import { ReporteComponent } from './pages/reporte/reporte.component';
     ReactiveFormsModule,
     FormsModule,
     FlexLayoutModule,
-    PdfViewerModule
+    PdfViewerModule,
+    JwtModule.forRoot({
+      config: {
+        tokenGetter: tokenGetter,
+        allowedDomains: [environment.HOST.substring(7)],
+        disallowedRoutes: [`http://${environment.HOST.substring(7)}/login/enviarCorreo`]
+      }
+    }),
   ],
-  providers: [],
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS, 
+      useClass: ServerErrorsInterceptor,
+      multi: true
+    },
+    { provide: LocationStrategy, useClass: HashLocationStrategy }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

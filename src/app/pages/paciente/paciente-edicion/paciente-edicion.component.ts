@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { switchMap } from 'rxjs/operators';
 import { Paciente } from 'src/app/_model/paciente';
@@ -44,8 +44,8 @@ export class PacienteEdicionComponent implements OnInit {
       this.pacienteService.listarPorId(this.id).subscribe(data => {
         this.form = new FormGroup({
           'id': new FormControl(data.idPaciente),
-          'nombres': new FormControl(data.nombres),
-          'apellidos': new FormControl(data.apellidos),
+          'nombres': new FormControl(data.nombres, [Validators.required, Validators.minLength(3)]),
+          'apellidos': new FormControl(data.apellidos, Validators.required),
           'dni': new FormControl(data.dni),
           'telefono': new FormControl(data.telefono),
           'direccion': new FormControl(data.direccion),
@@ -56,6 +56,8 @@ export class PacienteEdicionComponent implements OnInit {
   }
 
   operar(){
+    if(this.form.invalid){ return; } //Validacion del formulario.
+    
     let paciente = new Paciente();
     paciente.idPaciente = this.form.value['id'];
     paciente.nombres = this.form.value['nombres'];
@@ -90,5 +92,9 @@ export class PacienteEdicionComponent implements OnInit {
       });
     }
     this.router.navigate(['paciente']);
+  }
+
+  get f(){
+    return this.form.controls;
   }
 }
