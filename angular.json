@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "madiapp-frontend": {
+    "mediapp-frontend": {
       "projectType": "application",
       "schematics": {},
       "root": "",
@@ -13,7 +13,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/madiapp-frontend",
+            "outputPath": "dist/mediapp-frontend",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": [
@@ -61,10 +61,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "madiapp-frontend:build:production"
+              "browserTarget": "mediapp-frontend:build:production"
             },
             "development": {
-              "browserTarget": "madiapp-frontend:build:development"
+              "browserTarget": "mediapp-frontend:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -72,7 +72,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "madiapp-frontend:build"
+            "browserTarget": "mediapp-frontend:build"
           }
         },
         "test": {
